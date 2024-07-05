@@ -1,5 +1,5 @@
 //
-//  ImageResource.swift
+//  Image.swift
 //
 //
 //  Created by Ken Westdorp on 7/4/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ImageResource: Decodable, Sendable {
+public struct Image: Decodable, Sendable {
     public let path: URL
     public let `extension`: String
 

@@ -12,4 +12,3 @@ public struct APIResponse<T: Decodable & Sendable>: Decodable, Sendable {
     public let status: String
     public let data: APIDataContainer<T>
 }
-

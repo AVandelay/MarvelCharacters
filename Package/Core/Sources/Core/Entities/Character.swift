@@ -11,7 +11,7 @@ public struct Character: Decodable, Identifiable, Sendable {
     public let id: CharacterID
     public let name: String
     public let description: String?
-    public let thumbnail: ImageResource
+    public let thumbnail: Image?
     public let comics: CollectionResource<Comic>
 
     enum CodingKeys: String, CodingKey {
@@ -21,10 +21,10 @@ public struct Character: Decodable, Identifiable, Sendable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let idValue = try container.decode(Int.self, forKey: .id)
-        id = CharacterID(value: idValue)
+        id = CharacterID(rawValue: idValue)
         name = try container.decode(String.self, forKey: .name)
         description = try container.decodeIfPresent(String.self, forKey: .description)
-        thumbnail = try container.decode(ImageResource.self, forKey: .thumbnail)
+        thumbnail = try container.decodeIfPresent(Image.self, forKey: .thumbnail)
         comics = try container.decode(CollectionResource<Comic>.self, forKey: .comics)
     }
 }

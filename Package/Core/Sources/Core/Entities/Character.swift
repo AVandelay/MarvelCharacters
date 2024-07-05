@@ -13,6 +13,7 @@ public struct Character: Decodable, Identifiable, Sendable {
     public let description: String?
     public let thumbnail: Image?
     public let comics: CollectionResource<Comic>
+    public var isFollowing: Bool = false
 
     enum CodingKeys: String, CodingKey {
         case id, name, description, thumbnail, comics
@@ -28,3 +29,6 @@ public struct Character: Decodable, Identifiable, Sendable {
         comics = try container.decode(CollectionResource<Comic>.self, forKey: .comics)
     }
 }
+
+extension Character: Equatable { }
+extension Character: Hashable { }

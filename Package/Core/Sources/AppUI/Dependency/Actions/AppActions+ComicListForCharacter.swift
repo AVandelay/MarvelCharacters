@@ -11,7 +11,9 @@ import Foundation
 extension AppActions {
     @MainActor
     public struct ComicListForCharacter {
-        public var getComics: (CharacterID) async throws -> [Comic] = emptyAction(throwing: .message("Unimplemented"))
+        public var loadComics: (_ characterID: CharacterID, _ limit: Int, _ offset: Int) async throws -> LoadingState<Int, [Comic]> = emptyAction(throwing: ErrorMessage(message: "Unimplemented"))
+        public var loadMoreComics: (_ characterID: CharacterID, _ currentCount: Int) async throws -> LoadingState<Int, [Comic]> = emptyAction(throwing: ErrorMessage(message: "Unimplemented"))
+
         nonisolated init() { }
     }
 }

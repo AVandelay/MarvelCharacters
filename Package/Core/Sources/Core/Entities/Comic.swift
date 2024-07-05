@@ -10,14 +10,16 @@ import Foundation
 public struct Comic: Decodable, Identifiable, Sendable {
     public let id: ComicID
     public let title: String
-    public let description: String?
     public let thumbnail: Image?
-    public let series: SeriesSummary?
-    public let urls: [Url]?
-    public let prices: [ComicPrice]?
+    public let issueNumber: Double?
+
+    public var formattedIssueNumber: String? {
+        guard let issueNumber = issueNumber else { return nil }
+        return String(format: "#%.1f", issueNumber)
+    }
 
     enum CodingKeys: String, CodingKey {
-        case id, title, description, thumbnail, series, urls, prices
+        case id, title, thumbnail, issueNumber
     }
 
     public init(from decoder: Decoder) throws {
@@ -25,10 +27,11 @@ public struct Comic: Decodable, Identifiable, Sendable {
         let idValue = try container.decode(Int.self, forKey: .id)
         id = ComicID(rawValue: idValue)
         title = try container.decode(String.self, forKey: .title)
-        description = try container.decodeIfPresent(String.self, forKey: .description)
         thumbnail = try container.decodeIfPresent(Image.self, forKey: .thumbnail)
-        series = try container.decodeIfPresent(SeriesSummary.self, forKey: .series)
-        urls = try container.decodeIfPresent([Url].self, forKey: .urls)
-        prices = try container.decodeIfPresent([ComicPrice].self, forKey: .prices)
+        issueNumber = try container.decodeIfPresent(Double.self, forKey: .issueNumber)
     }
 }
+
+extension Comic: Equatable { }
+
+extension Comic: Hashable { }

@@ -8,15 +8,16 @@ let package = Package(
     products: [
         .library(name: "Core", targets: ["Core"]),
         .library(name: "API", targets: ["API"]),
-        .library(name: "CommonServices", targets: ["CommonServices"]),
+        .library(name: "Services", targets: ["Services"]),
         .library(name: "CommonUI", targets: ["CommonUI"]),
         .library(name: "AppUI", targets: ["AppUI"]),
+        .library(name: "LiveApp", targets: ["LiveApp"]),
     ],
     targets: [
+        
         // MARK: Core
 
-        .target(
-            name: "Core"),
+        .target(name: "Core"),
 
         // MARK: Infrastructure
 
@@ -28,8 +29,8 @@ let package = Package(
         // MARK: Services
 
         .target(
-            name: "CommonServices",
-            dependencies: ["Core", "API"]
+            name: "Services",
+            dependencies: ["Core", "API", "AppUI"]
         ),
 
         // MARK: UI
@@ -41,6 +42,13 @@ let package = Package(
         .target(
             name: "AppUI",
             dependencies: ["Core", "CommonUI"]
+        ),
+
+        // MARK: Live Containers
+
+        .target(
+            name: "LiveApp",
+            dependencies: ["Core", "API", "Services", "AppUI"]
         ),
     ]
 )

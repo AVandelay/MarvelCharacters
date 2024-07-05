@@ -15,8 +15,8 @@ public protocol AppContainer: DependencyContainer {
     associatedtype CharacterListScreenFactory: AppUI.CharacterListScreenFactory
     func makeCharacterListScreenFactory() -> CharacterListScreenFactory
 
-    associatedtype ComicListScreenFactory: AppUI.ComicListScreenFactory
-    func makeComicListScreenFactory() -> ComicListScreenFactory
+    associatedtype CharacterDetailScreenFactory: AppUI.CharacterDetailScreenFactory
+    func makeCharacterDetailScreenFactory() -> CharacterDetailScreenFactory
 }
 
 extension AppContainer {

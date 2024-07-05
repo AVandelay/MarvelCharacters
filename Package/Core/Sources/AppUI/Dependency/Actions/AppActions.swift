@@ -16,6 +16,7 @@ public struct AppActions: ViewInjectable {
 
     public var characterList = CharacterList()
     public var comicListForCharacter = ComicListForCharacter()
+    public var characterFollowing = CharacterFollowing()
 
     nonisolated public init() { }
 

@@ -20,3 +20,6 @@ public struct Image: Decodable, Sendable {
         case `extension` = "extension"
     }
 }
+
+extension Image: Equatable { }
+extension Image: Hashable { }

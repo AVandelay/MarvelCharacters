@@ -10,6 +10,7 @@ let package = Package(
         .library(name: "API", targets: ["API"]),
         .library(name: "CommonServices", targets: ["CommonServices"]),
         .library(name: "CommonUI", targets: ["CommonUI"]),
+        .library(name: "AppUI", targets: ["AppUI"]),
     ],
     targets: [
         // MARK: Core
@@ -36,6 +37,10 @@ let package = Package(
         .target(
             name: "CommonUI",
             dependencies: ["Core"]
+        ),
+        .target(
+            name: "AppUI",
+            dependencies: ["Core", "CommonUI"]
         ),
     ]
 )

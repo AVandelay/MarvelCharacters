@@ -8,6 +8,7 @@ let package = Package(
     products: [
         .library(name: "Core", targets: ["Core"]),
         .library(name: "API", targets: ["API"]),
+        .library(name: "CommonServices", targets: ["CommonServices"])
     ],
     targets: [
         // MARK: Core
@@ -20,6 +21,13 @@ let package = Package(
         .target(
             name: "API",
             dependencies: ["Core"]
+        ),
+
+        // MARK: Services
+
+        .target(
+            name: "CommonServices",
+            dependencies: ["Core", "API"]
         ),
     ]
 )

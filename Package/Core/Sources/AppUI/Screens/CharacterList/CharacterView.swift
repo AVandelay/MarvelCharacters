@@ -11,24 +11,14 @@ import SwiftUI
 
 struct CharacterView: View {
     let character: Character
+    let onSelect: (Character) -> Void
 
     var body: some View {
-        VStack {
-            ImageView(
-                url: character.thumbnail?.fullPath,
-                size: CGSize(width: 300, height: 300)
-            )
-            .clipShape(.circle)
-            .overlay(Circle().stroke(Color.white, lineWidth: 4))
-            .shadow(radius: 10)
-
-            Text(character.name.uppercased())
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .frame(width: 300)
-        }
-        .frame(width: 300, height: 400)
-        .focusable(true)
+        FocusableItemView(
+            imageURL: character.thumbnail?.fullPath,
+            imageShape: .round,
+            title: character.name,
+            action: { onSelect(character) }
+        )
     }
 }

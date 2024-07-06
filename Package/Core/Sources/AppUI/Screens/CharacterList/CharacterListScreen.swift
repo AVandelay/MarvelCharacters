@@ -24,10 +24,10 @@ struct CharacterListScreen<Factory: CharacterListScreenFactory>: View {
                 loadMore: loadMoreCharacters,
                 isLoadingMore: isLoadingMore
             ) { character in
-                CharacterView(character: screenData.character(character))
-                    .onTapGesture {
-                        onCharacterSelected(character)
-                    }
+                CharacterView(
+                    character: screenData.character(character),
+                    onSelect: onCharacterSelected
+                )
             }
         }
         .task {

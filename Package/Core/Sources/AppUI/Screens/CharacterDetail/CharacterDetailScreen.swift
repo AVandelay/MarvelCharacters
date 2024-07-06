@@ -15,6 +15,7 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
     @State var character: Character
     @State private var loadingState: LoadingState<Int, [Comic]> = LoadingState(input: 0)
     @State private var isLoadingMore = false
+    @State private var gradientOffset: CGFloat = -1
     @Environment(\.appActions) private var actions
     @EnvironmentObject private var errorAlertState: AppState.ErrorAlert
 
@@ -26,27 +27,37 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
         .task {
             character.isFollowing = actions.characterFollowing.isFollowing(character.id)
             await loadComics()
+            withAnimation(.easeInOut(duration: 1)) {
+                gradientOffset = 0
+            }
         }
         .dependency(factory)
     }
 
     private var characterHeader: some View {
-        HStack {
+        ZStack(alignment: .bottomLeading) {
             ImageView(
                 url: character.thumbnail?.fullPath,
-                size: CGSize(width: 800, height: 400)
+                size: CGSize(width: 1920, height: 400)
             )
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white, lineWidth: 2))
-            .shadow(radius: 5)
             .frame(height: 400)
             .clipped()
 
-            VStack(alignment: .leading) {
+            LinearGradient(
+                gradient: Gradient(colors: [.clear, .black.opacity(0.7)]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 400)
+            .relativeProposed(width: 1)
+            .offset(x: gradientOffset * 1920)
+
+            VStack(alignment: .leading, spacing: 10) {
                 Text(character.name)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
+                    .shadow(radius: 5)
 
                 Button(action: {
                     Task {
@@ -68,8 +79,11 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
                     .cornerRadius(20)
                 }
             }
-            .padding()
+            .padding(.horizontal, 20)
+            .padding(.bottom, 20)
+            .relativeProposed(width: 0.6)
         }
+        .frame(height: 400)
     }
 
     private var comicList: some View {

@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-public struct HorizontalScrollView<Item: Identifiable, ItemView: View>: View {
+struct HorizontalScrollView<Item: Identifiable, ItemView: View>: View {
     let items: [Item]
     let loadMore: () async -> Void
     let isLoadingMore: Bool
     let itemView: (Item) -> ItemView
 
-    public init(
+    init(
         items: [Item],
         loadMore: @escaping () async -> Void,
         isLoadingMore: Bool,
@@ -25,7 +25,7 @@ public struct HorizontalScrollView<Item: Identifiable, ItemView: View>: View {
         self.itemView = itemView
     }
 
-    public var body: some View {
+    var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 60) {
                 ForEach(items) { item in

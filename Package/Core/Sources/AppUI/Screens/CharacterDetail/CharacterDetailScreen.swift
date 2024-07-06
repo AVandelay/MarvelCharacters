@@ -15,7 +15,9 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
     @State var character: Character
     @State private var loadingState: LoadingState<Int, [Comic]> = LoadingState(input: 0)
     @State private var isLoadingMore = false
-    @State private var gradientOffset: CGFloat = -1
+
+    @FocusState private var isFocused: Bool
+
     @Environment(\.appActions) private var actions
     @EnvironmentObject private var errorAlertState: AppState.ErrorAlert
 
@@ -27,9 +29,6 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
         .task {
             character.isFollowing = actions.characterFollowing.isFollowing(character.id)
             await loadComics()
-            withAnimation(.easeInOut(duration: 1)) {
-                gradientOffset = 0
-            }
         }
         .dependency(factory)
     }
@@ -44,13 +43,12 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
             .clipped()
 
             LinearGradient(
-                gradient: Gradient(colors: [.clear, .black.opacity(0.7)]),
+                gradient: Gradient(colors: [.black.opacity(0.7), .clear]),
                 startPoint: .leading,
                 endPoint: .trailing
             )
             .frame(height: 400)
             .relativeProposed(width: 1)
-            .offset(x: gradientOffset * 1920)
 
             VStack(alignment: .leading, spacing: 10) {
                 Text(character.name)
@@ -59,25 +57,8 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
                     .foregroundColor(.white)
                     .shadow(radius: 5)
 
-                Button(action: {
-                    Task {
-                        do {
-                            character.isFollowing = try await actions.characterFollowing.toggleFollowing(character)
-                        } catch {
-                            errorAlertState.alert = .init(message: "Failed to update following status")
-                        }
-                    }
-                }) {
-                    HStack {
-                        Image(systemName: character.isFollowing ? "checkmark" : "plus")
-                        Text(character.isFollowing ? "Following" : "Follow")
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-                }
+                FollowButton()
+                    .focused($isFocused)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)

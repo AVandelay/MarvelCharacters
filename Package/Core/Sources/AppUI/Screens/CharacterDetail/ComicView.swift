@@ -13,8 +13,8 @@ struct ComicView: View {
     let comic: Comic
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            ImageView(url: comic.thumbnail?.fullPath, size: CGSize(width: 150, height: 225))
+        VStack(alignment: .leading, spacing: 10) {
+            ImageView(url: comic.thumbnail?.fullPath, size: CGSize(width: 200, height: 300))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white, lineWidth: 2))
                 .shadow(radius: 5)
@@ -29,6 +29,6 @@ struct ComicView: View {
                     .multilineTextAlignment(.leading)
             }
         }
-        .frame(width: 150)
+        .frame(width: 200)
     }
 }

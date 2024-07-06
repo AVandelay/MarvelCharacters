@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct APIDataContainer: Decodable, Sendable {
+public struct APIDataContainer<T: Decodable & Sendable>: Decodable, Sendable {
     public let offset: Int
     public let limit: Int
     public let total: Int
     public let count: Int
-    public let results: [Character]
+    public let results: [T]
 }

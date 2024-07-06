@@ -11,7 +11,7 @@ import Core
 extension MarvelAPI {
     public enum ComicsWithCharacterRequest {
         public struct Get: MarvelAPIRequest {
-            public typealias Message = [Comic]
+            public typealias Message = APIDataContainer<Comic>
 
             public var path: String { "v1/public/characters/\(characterID.rawValue)/comics" }
             public let method = "GET"

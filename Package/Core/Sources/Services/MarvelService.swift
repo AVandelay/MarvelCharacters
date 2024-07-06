@@ -46,7 +46,7 @@ public final class MarvelService {
         do {
             let request = MarvelAPI.ComicsWithCharacterRequest.Get(characterID: characterID, limit: limit, offset: offset)
             let response = try await api.execute(request)
-            return response.data
+            return response.data.results
         } catch {
             errorAlert.alert = .init(message: "Failed to fetch comics for character")
             throw error

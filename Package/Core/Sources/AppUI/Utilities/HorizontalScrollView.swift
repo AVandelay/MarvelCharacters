@@ -47,7 +47,7 @@ struct HorizontalScrollView<Item: Identifiable, ItemView: View>: View {
             ProgressView()
                 .frame(width: 300, height: 400)
         } else {
-            EmptyView()
+            Color.clear
                 .onAppear {
                     Task {
                         await loadMore()

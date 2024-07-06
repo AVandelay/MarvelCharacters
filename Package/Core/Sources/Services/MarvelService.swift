@@ -24,7 +24,7 @@ public final class MarvelService {
         do {
             let request = MarvelAPI.CharacterListRequest.Get(limit: limit, offset: offset)
             let response = try await api.execute(request)
-            return response.data
+            return response.data.results
         } catch {
             errorAlert.alert = .init(message: "Failed to fetch character list")
             throw error

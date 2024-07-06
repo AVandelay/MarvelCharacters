@@ -12,7 +12,7 @@ public struct Character: Decodable, Identifiable, Sendable {
     public let name: String
     public let description: String?
     public let thumbnail: Image?
-    public let comics: CollectionResource<Comic>
+    public let comics: CollectionResource<ComicSummary>
     public var isFollowing: Bool = false
 
     enum CodingKeys: String, CodingKey {
@@ -26,7 +26,7 @@ public struct Character: Decodable, Identifiable, Sendable {
         name = try container.decode(String.self, forKey: .name)
         description = try container.decodeIfPresent(String.self, forKey: .description)
         thumbnail = try container.decodeIfPresent(Image.self, forKey: .thumbnail)
-        comics = try container.decode(CollectionResource<Comic>.self, forKey: .comics)
+        comics = try container.decode(CollectionResource<ComicSummary>.self, forKey: .comics)
     }
 }
 

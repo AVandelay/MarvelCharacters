@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct APIResponse<T: Decodable & Sendable>: Decodable, Sendable {
+public struct APIResponse: Decodable, Sendable {
     public let code: Int
     public let status: String
-    public let data: APIDataContainer<T>
+    public let data: APIDataContainer
 }

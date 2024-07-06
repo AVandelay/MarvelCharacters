@@ -27,7 +27,7 @@ public struct HorizontalScrollView<Item: Identifiable, ItemView: View>: View {
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 40) {
+            LazyHStack(spacing: 60) {
                 ForEach(items) { item in
                     itemView(item)
                 }
@@ -36,7 +36,8 @@ public struct HorizontalScrollView<Item: Identifiable, ItemView: View>: View {
                     lastItemView
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 90)
+            .padding(.vertical, 60)
         }
     }
 
@@ -44,6 +45,7 @@ public struct HorizontalScrollView<Item: Identifiable, ItemView: View>: View {
     private var lastItemView: some View {
         if isLoadingMore {
             ProgressView()
+                .frame(width: 300, height: 400)
         } else {
             EmptyView()
                 .onAppear {

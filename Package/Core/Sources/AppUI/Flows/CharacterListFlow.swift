@@ -33,14 +33,14 @@ extension CharacterListFlow {
                 .navigationTitle("Popular Characters".uppercased())
                 .toolbar {
                     ToolbarItem(placement: .automatic) {
-                        Button("See All >".uppercased()) {
-                            print("See All".uppercased() + " " + "Selected")
+                        Button("SEE ALL") {
+                            print("SEE ALL SELECTED")
                         }
                     }
                 }
                 .navigationDestination(for: Character.self) { character in
                     CharacterDetailScreen(
-                        factory: flow.container.makeComicListScreenFactory(),
+                        factory: flow.container.makeCharacterDetailScreenFactory(),
                         character: character
                     )
                 }

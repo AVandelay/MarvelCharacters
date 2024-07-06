@@ -16,17 +16,19 @@ struct CharacterView: View {
         VStack {
             ImageView(
                 url: character.thumbnail?.fullPath,
-                size: CGSize(width: 50, height: 50)
+                size: CGSize(width: 300, height: 300)
             )
             .clipShape(.circle)
             .overlay(Circle().stroke(Color.white, lineWidth: 4))
             .shadow(radius: 10)
 
-            Text(character.name)
+            Text(character.name.uppercased())
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
-                .frame(width: 200)
+                .frame(width: 300)
         }
+        .frame(width: 300, height: 400)
+        .focusable(true)
     }
 }

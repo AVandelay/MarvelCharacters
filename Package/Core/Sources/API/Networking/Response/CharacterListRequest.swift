@@ -11,7 +11,7 @@ import Core
 extension MarvelAPI {
     public enum CharacterListRequest {
         public struct Get: MarvelAPIRequest {
-            public typealias Message = [Character]
+            public typealias Message = APIDataContainer
 
             public let path = "v1/public/characters"
             public let method = "GET"

@@ -73,10 +73,10 @@ public final class MockAppContainer: MockDependencyContainer, AppContainer {
 
         app.actions.characterFollowing.toggleFollowing = { character in
             try? await Task.sleep(for: .seconds(0.5))
-            return !character.isFollowing
+            return !character.isFollowed
         }
         
-        app.actions.characterFollowing.isFollowing = { _ in false }
+        app.actions.characterFollowing.isFollowed = { _ in false }
     }
 
     public func inject(content: Content) -> some View {

@@ -10,8 +10,10 @@ import Combine
 
 struct FollowButton: View {
     struct Sparkle: View {
+        @Binding var isFollowed: Bool
+
         var body: some View {
-            Image(systemName: "sparkles")
+            Image(systemName: isFollowed ? "star.fill" : "star")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: CGFloat.random(in: 5...15), height: CGFloat.random(in: 5...15))
@@ -20,10 +22,14 @@ struct FollowButton: View {
         }
     }
 
-    @State private var isFollowed = false
     @State private var animateSparkles = false
     @State private var cancellable: AnyCancellable?
+    
     @FocusState private var isFocused: Bool
+
+    @Binding var isFollowed: Bool
+
+    var toggleFollowState: () -> Void
 
     var body: some View {
         HStack {
@@ -35,7 +41,7 @@ struct FollowButton: View {
 
                 if animateSparkles {
                     ForEach(0..<10) { i in
-                        Sparkle()
+                        Sparkle(isFollowed: $isFollowed)
                             .offset(x: CGFloat.random(in: -25...25), y: CGFloat.random(in: -25...25))
                             .opacity(animateSparkles ? 1 : 0)
                             .animation(
@@ -57,15 +63,10 @@ struct FollowButton: View {
         .focusable(true)
         .focused($isFocused)
         .onTapGesture {
-            toggleFollowState()
-        }
-    }
-
-    private func toggleFollowState() {
-        withAnimation {
             animateSparkles = true
+            toggleFollowState()
+            startAnimation()
         }
-        startAnimation()
     }
 
     private func startAnimation() {

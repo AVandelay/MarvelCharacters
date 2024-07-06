@@ -13,7 +13,7 @@ public struct Character: Decodable, Identifiable, Sendable {
     public let description: String?
     public let thumbnail: Image?
     public let comics: CollectionResource<ComicSummary>
-    public var isFollowing: Bool = false
+    public var isFollowed: Bool = false
 
     enum CodingKeys: String, CodingKey {
         case id, name, description, thumbnail, comics

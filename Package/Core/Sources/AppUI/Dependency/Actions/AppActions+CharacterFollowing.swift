@@ -12,7 +12,7 @@ extension AppActions {
     @MainActor
     public struct CharacterFollowing {
         public var toggleFollowing: (Character) async throws -> Bool = emptyAction(throwing: ErrorMessage(message: "Unimplemented"))
-        public var isFollowing: (CharacterID) -> Bool = emptyAction(returning: false)
+        public var isFollowed: (CharacterID) -> Bool = emptyAction(returning: false)
 
         nonisolated init() { }
     }

@@ -92,7 +92,7 @@ public final class LiveAppContainer: AppContainer {
             return newValue
         }
 
-        app.actions.characterFollowing.isFollowing = { [weak self] characterID in
+        app.actions.characterFollowing.isFollowed = { [weak self] characterID in
             guard let self = self else { return false }
             let key = "character_following_\(characterID.rawValue)"
             return self.userDefaults.bool(forKey: key)

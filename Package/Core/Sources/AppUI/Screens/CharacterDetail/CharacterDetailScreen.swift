@@ -27,7 +27,7 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
             comicList
         }
         .task {
-            character.isFollowing = actions.characterFollowing.isFollowing(character.id)
+            character.isFollowed = actions.characterFollowing.isFollowed(character.id)
             await loadComics()
         }
         .dependency(factory)
@@ -57,7 +57,15 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
                     .foregroundColor(.white)
                     .shadow(radius: 5)
 
-                FollowButton()
+                FollowButton(isFollowed: $character.isFollowed) {
+                    Task {
+                        do {
+                            character.isFollowed = try await actions.characterFollowing.toggleFollowing(character)
+                        } catch {
+                            errorAlertState.alert = .init(message: "Failed to update following status")
+                        }
+                    }
+                }
                     .focused($isFocused)
             }
             .padding(.horizontal, 20)

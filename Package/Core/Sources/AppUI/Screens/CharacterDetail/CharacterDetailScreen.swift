@@ -31,48 +31,42 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
     }
 
     private var characterHeader: some View {
-        ZStack(alignment: .bottom) {
+        HStack {
             ImageView(
                 url: character.thumbnail?.fullPath,
                 size: CGSize(width: 800, height: 400)
             )
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 400)
-                .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white, lineWidth: 2))
+            .shadow(radius: 5)
+            .frame(height: 400)
+            .clipped()
 
-            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.8)]),
-                           startPoint: .top,
-                           endPoint: .bottom)
-            .frame(height: 200)
+            VStack(alignment: .leading) {
+                Text(character.name)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
 
-            HStack(alignment: .bottom) {
-                VStack(alignment: .leading) {
-                    Text(character.name)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-
-                    Button(action: {
-                        Task {
-                            do {
-                                character.isFollowing = try await actions.characterFollowing.toggleFollowing(character)
-                            } catch {
-                                errorAlertState.alert = .init(message: "Failed to update following status")
-                            }
+                Button(action: {
+                    Task {
+                        do {
+                            character.isFollowing = try await actions.characterFollowing.toggleFollowing(character)
+                        } catch {
+                            errorAlertState.alert = .init(message: "Failed to update following status")
                         }
-                    }) {
-                        HStack {
-                            Image(systemName: character.isFollowing ? "checkmark" : "plus")
-                            Text(character.isFollowing ? "Following" : "Follow")
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(20)
                     }
+                }) {
+                    HStack {
+                        Image(systemName: character.isFollowing ? "checkmark" : "plus")
+                        Text(character.isFollowing ? "Following" : "Follow")
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
                 }
-                Spacer()
             }
             .padding()
         }

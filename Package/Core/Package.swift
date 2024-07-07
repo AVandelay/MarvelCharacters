@@ -32,6 +32,13 @@ let package = Package(
             name: "Services",
             dependencies: ["Core", "API", "AppUI"]
         ),
+        .testTarget(
+            name: "ServicesTests",
+            dependencies: ["Services"],
+            resources: [
+                .process("Resources")
+            ]
+        ),
 
         // MARK: UI
         

@@ -12,16 +12,13 @@ public final class MockAppContainer: MockDependencyContainer, AppContainer {
     public struct Configuration {
         var characters: [Character]
         var comics: [Comic]
-        var didShowWelcome: Bool
 
         public init(
             characters: [Character] = [],
-            comics: [Comic] = [],
-            didShowWelcome: Bool = true
+            comics: [Comic] = []
         ) {
             self.characters = characters
             self.comics = comics
-            self.didShowWelcome = didShowWelcome
         }
     }
 
@@ -35,7 +32,6 @@ public final class MockAppContainer: MockDependencyContainer, AppContainer {
         self.defaults = .mock()
 
         setupMockActions()
-        defaults.set(configuration.didShowWelcome, forKey: "didShowWelcome")
     }
 
     private func setupMockActions() {

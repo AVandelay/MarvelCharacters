@@ -12,10 +12,13 @@ import Foundation
 
 @MainActor
 public final class MarvelService {
-    private let api: MarvelAPIClient
-    private let errorAlert: AppState.ErrorAlert
+    private let api: MarvelAPIClientProtocol
+    private let errorAlert: any ErrorAlertProtocol
 
-    public init(api: MarvelAPIClient, errorAlert: AppState.ErrorAlert) {
+    public init(
+        api: MarvelAPIClientProtocol,
+        errorAlert: any ErrorAlertProtocol
+    ) {
         self.api = api
         self.errorAlert = errorAlert
     }
@@ -31,17 +34,6 @@ public final class MarvelService {
         }
     }
 
-    public func getCharacter(characterID: CharacterID) async throws -> Character {
-        do {
-            let request = MarvelAPI.CharacterRequest.Get(characterID: characterID)
-            let response = try await api.execute(request)
-            return response.data
-        } catch {
-            errorAlert.alert = .init(message: "Failed to fetch character details")
-            throw error
-        }
-    }
-
     public func getComicsWithCharacter(characterID: CharacterID, limit: Int, offset: Int) async throws -> [Comic] {
         do {
             let request = MarvelAPI.ComicsWithCharacterRequest.Get(characterID: characterID, limit: limit, offset: offset)
@@ -49,27 +41,6 @@ public final class MarvelService {
             return response.data.results
         } catch {
             errorAlert.alert = .init(message: "Failed to fetch comics for character")
-            throw error
-        }
-    }
-
-    public func getComicThumbnailURL(comicID: ComicID) async throws -> URL? {
-        do {
-            let comic = try await getComic(comicID: comicID)
-            return comic.thumbnail?.fullPath
-        } catch {
-            errorAlert.alert = .init(message: "Failed to fetch comic thumbnail")
-            throw error
-        }
-    }
-
-    private func getComic(comicID: ComicID) async throws -> Comic {
-        do {
-            let request = MarvelAPI.ComicRequest.Get(comicID: comicID)
-            let response = try await api.execute(request)
-            return response.data
-        } catch {
-            errorAlert.alert = .init(message: "Failed to fetch comic details")
             throw error
         }
     }

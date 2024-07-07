@@ -8,7 +8,11 @@
 import Foundation
 import Core
 
-public final class MarvelAPIClient: Sendable {
+public protocol MarvelAPIClientProtocol: Sendable {
+    func execute<Request: MarvelAPIRequest>(_ request: Request) async throws -> Request.Response
+}
+
+public final class MarvelAPIClient: MarvelAPIClientProtocol {
     public struct Configuration: Sendable {
         let baseURL: URL
         let publicKey: String

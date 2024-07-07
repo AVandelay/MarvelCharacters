@@ -38,7 +38,8 @@ public struct WithMockContainer<Container: MockDependencyContainer, Content: Vie
 }
 
 extension View {
-    @MainActor public func mockContainer<Container: MockDependencyContainer>(
+    @MainActor 
+    public func mockContainer<Container: MockDependencyContainer>(
         _ container: @autoclosure @escaping () -> Container
     ) -> some View {
         WithMockContainer(container()) { _ in

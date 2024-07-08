@@ -10,10 +10,10 @@ import Combine
 
 struct FollowButton: View {
     struct Sparkle: View {
-        @Binding var isFollowed: Bool
+        let isFollowed: Bool
 
         var body: some View {
-            Image(systemName: isFollowed ? "star.fill" : "star")
+            Image(systemName: isFollowed ? "star" : "star.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: CGFloat.random(in: 5...15), height: CGFloat.random(in: 5...15))
@@ -24,7 +24,6 @@ struct FollowButton: View {
 
     @State private var animateSparkles = false
     @State private var cancellable: AnyCancellable?
-    @State private var isAnimating = false
 
     @FocusState private var isFocused: Bool
 
@@ -42,7 +41,7 @@ struct FollowButton: View {
 
                 if animateSparkles {
                     ForEach(0..<10) { i in
-                        Sparkle(isFollowed: $isFollowed)
+                        Sparkle(isFollowed: isFollowed)
                             .offset(x: CGFloat.random(in: -25...25), y: CGFloat.random(in: -25...25))
                             .opacity(animateSparkles ? 1 : 0)
                             .animation(
@@ -68,42 +67,36 @@ struct FollowButton: View {
                 await toggleFollow()
             }
         }
-        .onChange(of: isAnimating) { newValue in
-            if newValue {
-                startAnimation()
-            } else {
-                cancellable?.cancel()
-            }
-        }
     }
 
     private func startAnimation() {
-        cancellable = Timer.publish(every: 1.0, on: .main, in: .common)
+        animateSparkles = true
+        cancellable = Timer.publish(every: 0.1, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
-                withAnimation(Animation.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.5)) {
-                    isFollowed.toggle()
-                    animateSparkles = false
+                withAnimation {
+                    animateSparkles.toggle()
                 }
-                cancellable?.cancel()
             }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            cancellable?.cancel()
+            animateSparkles = false
+        }
     }
 
     private func toggleFollow() async {
         let wasFollowed = isFollowed
-        isAnimating = true
-        animateSparkles = true
+        isFollowed.toggle()
+        startAnimation()
 
         do {
             let result = try await toggleFollowState()
-            isFollowed = result
+            if result != isFollowed {
+                isFollowed = result
+            }
         } catch {
             isFollowed = wasFollowed
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            isAnimating = false
-            animateSparkles = false
         }
     }
 }

@@ -24,12 +24,13 @@ struct FollowButton: View {
 
     @State private var animateSparkles = false
     @State private var cancellable: AnyCancellable?
-    
+    @State private var isAnimating = false
+
     @FocusState private var isFocused: Bool
 
     @Binding var isFollowed: Bool
 
-    var toggleFollowState: () -> Void
+    var toggleFollowState: () async throws -> Bool
 
     var body: some View {
         HStack {
@@ -63,9 +64,16 @@ struct FollowButton: View {
         .focusable(true)
         .focused($isFocused)
         .onTapGesture {
-            animateSparkles = true
-            toggleFollowState()
-            startAnimation()
+            Task {
+                await toggleFollow()
+            }
+        }
+        .onChange(of: isAnimating) { newValue in
+            if newValue {
+                startAnimation()
+            } else {
+                cancellable?.cancel()
+            }
         }
     }
 
@@ -79,5 +87,23 @@ struct FollowButton: View {
                 }
                 cancellable?.cancel()
             }
+    }
+
+    private func toggleFollow() async {
+        let wasFollowed = isFollowed
+        isAnimating = true
+        animateSparkles = true
+
+        do {
+            let result = try await toggleFollowState()
+            isFollowed = result
+        } catch {
+            isFollowed = wasFollowed
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            isAnimating = false
+            animateSparkles = false
+        }
     }
 }

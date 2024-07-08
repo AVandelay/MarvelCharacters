@@ -58,12 +58,11 @@ struct CharacterDetailScreen<Factory: CharacterDetailScreenFactory>: View {
                     .shadow(radius: 5)
 
                 FollowButton(isFollowed: $character.isFollowed) {
-                    Task {
-                        do {
-                            character.isFollowed = try await actions.characterFollowing.toggleFollowing(character)
-                        } catch {
-                            errorAlertState.alert = .init(message: "Failed to update following status")
-                        }
+                    do {
+                        return try await actions.characterFollowing.toggleFollowing(character)
+                    } catch {
+                        errorAlertState.alert = .init(message: "Failed to update following status")
+                        throw error
                     }
                 }
                     .focused($isFocused)
